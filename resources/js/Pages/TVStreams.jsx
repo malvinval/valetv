@@ -16,7 +16,7 @@ export default function TVStreams({ auth, streaming_url_links, country, response
         if (isStreamingProviderWorksFine == true) {
             return <p className='pl-2 text-green-600 font-extrabold text-xl'>ACTIVE</p>
         } else {
-            return <p className='pl-2 text-red-500 font-extrabold text-xl'>DOWN</p>
+            return <p className='pl-2 text-red-500 font-extrabold text-xl'>INACTIVE</p>
         }
     }
 
