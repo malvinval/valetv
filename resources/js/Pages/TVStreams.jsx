@@ -21,10 +21,10 @@ export default function TVStreams({ auth, streaming_url_links, country, response
     }
 
 
-    const attachStream = (url,name) => {
+    const attachStream = (url, name) => {
         setIsStreamingProviderWorksFine(false)
         setCurrentChannelName(name)
-        
+
         if (Hls.isSupported()) {
             var video = document.getElementById('video');
             var hls = new Hls();
@@ -33,17 +33,16 @@ export default function TVStreams({ auth, streaming_url_links, country, response
             });
             hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
                 setIsStreamingProviderWorksFine(true)
-                setCurrentChannelName(name.substring(0, name.length - 3))
+                setCurrentChannelName(name)
                 console.log(
                     'Manifest loaded, found ' + data.levels.length + ' quality level!',
                 );
-                console.log(data.levels)
             });
 
             hls.loadSource(url);
 
             hls.attachMedia(video);
-        
+
             video.play();
         }
     }
@@ -88,13 +87,13 @@ export default function TVStreams({ auth, streaming_url_links, country, response
                         <div className="p-4 lg:p-0 text-gray-900 flex flex-wrap justify-start md:justify-between">
                             {streamingUrlLinks.map((s) => {
                                 i++;
-                                
+
                                 return (
                                     <div className='p-2'>
                                         <div onClick={() => {
-                                                setShowStream(s.url);
-                                                attachStream(s.url, s.channel);
-                                            }
+                                            setShowStream(s.url);
+                                            attachStream(s.url, s.channel);
+                                        }
                                         } className="badge badge-outline text-lg p-4 cursor-pointer">{s.channel}</div>
                                     </div>
                                 )
