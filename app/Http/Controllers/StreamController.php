@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Country;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -39,9 +40,14 @@ class StreamController extends Controller
             }
         }
 
+        $countries = Cache::remember('data_from_countries', now()->addHours(1), function () {
+            return Country::all();
+        });
+
         return Inertia::render("TVStreams", [
             "streaming_url_links" => $clean_data,
             "country" => $request->input("country"),
+            "countries" => $countries
         ]);
     }
 }

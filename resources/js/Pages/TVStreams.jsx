@@ -1,16 +1,17 @@
 import TVStreamItem from '@/Components/TVStreamItem';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import axios from 'axios';
 import Hls from 'hls.js';
 import { useEffect, useState } from 'react';
 
-export default function TVStreams({ auth, streaming_url_links, country, response }) {
+export default function TVStreams({ auth, streaming_url_links, country }) {
     const [streamingUrlLinks, setStreamingUrlLinks] = useState(streaming_url_links)
     const [countryCode, setCountryCode] = useState("id")
     const [showStream, setShowStream] = useState(null)
     const [isStreamingProviderWorksFine, setIsStreamingProviderWorksFine] = useState(false);
     const [currentChannelName, setCurrentChannelName] = useState("-");
+    const [recommendedCountries, setRecommendedCountries] = useState(null);
 
     const RenderStatus = () => {
         if (isStreamingProviderWorksFine == true) {
@@ -19,7 +20,6 @@ export default function TVStreams({ auth, streaming_url_links, country, response
             return <p className='pl-2 text-red-500 font-extrabold text-xl'>INACTIVE</p>
         }
     }
-
 
     const attachStream = (url, name) => {
         setIsStreamingProviderWorksFine(false)
@@ -47,6 +47,18 @@ export default function TVStreams({ auth, streaming_url_links, country, response
         }
     }
 
+    const getCountryRecommendations = (inputCountry) => {
+        if(inputCountry != "") {
+            axios.get("/api/countries", {
+                params: { input: inputCountry }
+            }).then((response) => {
+                setRecommendedCountries(response.data)
+            })
+        } else {
+            setRecommendedCountries(null)
+        }
+    }
+
     let i = 0;
 
     return (
@@ -59,13 +71,25 @@ export default function TVStreams({ auth, streaming_url_links, country, response
             <div className="py-12">
                 <div className="max-w-[85rem] mx-auto sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className='px-4 pb-8 lg:px-0'>
-                            <div className="dropdown dropdown-hover">
-                                <label tabIndex={0} className="btn bg-indigo-500 hover:bg-indigo-600 text-white">Choose Country</label>
-                                <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                    <li><a>Item 1</a></li>
-                                    <li><a>Item 2</a></li>
-                                </ul>
+                        <div className='pb-8 lg:px-0 flex justify-end'>
+                            <div className='relative px-4 lg:px-0'>
+                                <input className="input input-primary bg-transparent text-indigo-500 w-full max-w-xs" type="text" onChange={(e) => getCountryRecommendations(e.target.value)} placeholder='Search country...' />
+                                {
+                                    recommendedCountries != null ? 
+                                    <div className='bg-white absolute w-full'>
+                                        {recommendedCountries.map((c) => {
+                                            return (
+                                                <>
+                                                    <Link href={`/tv-streams?country=${c["code"]}`}>
+                                                        <div className='p-3'>{c["name"]}</div>
+                                                    </Link>
+                                                </>
+                                            )
+                                        })}
+                                    </div>
+                                    :
+                                    ""
+                                }
                             </div>
                         </div>
 
@@ -74,8 +98,7 @@ export default function TVStreams({ auth, streaming_url_links, country, response
 
                             <div className='pl-0 lg:pl-10 pt-4 lg:pt-0'>
                                 <div className='flex items-center mb-3'>
-                                    <p className='text-xl font-bold'>Channel name:</p>
-                                    <p className='pl-2 font-extrabold text-xl'>{currentChannelName}</p>
+                                    <p className='font-extrabold text-lg md:text-xl'>{currentChannelName}</p>
                                 </div>
                                 <div className='flex items-center'>
                                     <p className='text-xl font-bold'>Channel status: </p>
@@ -83,8 +106,15 @@ export default function TVStreams({ auth, streaming_url_links, country, response
                                 </div>
                             </div>
                         </div>
+                        
+                        {
+                            streamingUrlLinks.length === 0 ?
+                            <div className='px-3 py-4 font-bold text-xl text-red-600'>No channel</div>
+                            :
+                            <div className='px-3 py-4 font-bold text-xl text-indigo-600'>Channels:</div>
+                        }
 
-                        <div className="p-4 lg:p-0 text-gray-900 flex flex-wrap justify-start md:justify-between">
+                        <div className={`p-4 lg:p-0 text-gray-900 flex flex-wrap justify-start md:${streamingUrlLinks.length >= 6 ? "justify-between" : "justify-start"}`}>
                             {streamingUrlLinks.map((s) => {
                                 i++;
 
@@ -94,7 +124,7 @@ export default function TVStreams({ auth, streaming_url_links, country, response
                                             setShowStream(s.url);
                                             attachStream(s.url, s.channel);
                                         }
-                                        } className="badge badge-outline text-lg p-4 cursor-pointer">{s.channel}</div>
+                                        } className={`badge badge-outline ${currentChannelName == s.channel ? "text-indigo-500":""} text-lg p-4 cursor-pointer font-bold`}>{s.channel}</div>
                                     </div>
                                 )
                             })}
