@@ -75,7 +75,7 @@ export default function TVStreams({ auth, streaming_url_links, country }) {
                                 <input className="input input-primary bg-transparent text-indigo-500 w-full max-w-xs" type="text" onChange={(e) => getCountryRecommendations(e.target.value)} placeholder='Search country...' />
                                 {
                                     recommendedCountries != null ? 
-                                    <div className='bg-white absolute w-full'>
+                                    <div className='bg-white absolute w-full z-10'>
                                         {recommendedCountries.map((c) => {
                                             return (
                                                 <>

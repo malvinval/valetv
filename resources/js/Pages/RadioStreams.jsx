@@ -55,7 +55,7 @@ const RadioStreams = ({ auth, streaming_url_links, country }) => {
                                 <input className="input input-primary bg-transparent text-indigo-500 w-full max-w-xs" type="text" onChange={(e) => getCountryRecommendations(e.target.value)} placeholder='Search country...' />
                                 {
                                     recommendedCountries != null ?
-                                        <div className='bg-white absolute w-full'>
+                                        <div className='bg-white absolute w-full z-10'>
                                             {recommendedCountries.map((c) => {
                                                 return (
                                                     <>
@@ -72,7 +72,7 @@ const RadioStreams = ({ auth, streaming_url_links, country }) => {
                             </div>
                         </div>
 
-                        <div id='stream-container' className={`pb-5 lg:px-0 ${showStream ? "" : "hidden"} flex flex-col lg:flex-row`}>
+                        <div id='stream-container' className={`px-4 pb-5 lg:px-0 ${showStream ? "" : "hidden"} flex flex-col lg:flex-row`}>
                             <div className='w-full lg:w-1/2'>
 
                                 <div className='h-[200px] flex items-center justify-center'>
@@ -84,12 +84,12 @@ const RadioStreams = ({ auth, streaming_url_links, country }) => {
                                     }
                                 </div>
 
-                                <audio id='audio' src={showStream} controls className='w-full'></audio>
+                                <audio id='audio' autoPlay src={showStream} controls className='w-full'></audio>
                             </div>
 
                             <div className='pl-0 lg:pl-10 pt-4 lg:pt-0'>
                                 <div className='flex items-center mb-3'>
-                                    <p className='font-extrabold text-lg md:text-xl'>Radio name: <span className='font-light'>{radioName}</span></p>
+                                    <p className='font-extrabold text-lg md:text-xl'>{radioName}</p>
                                 </div>
                                 <div className='flex items-center'>
                                     <p className='text-xl font-bold'></p>
