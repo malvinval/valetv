@@ -92,6 +92,10 @@ export default function Login({ status, canResetPassword }) {
                     </PrimaryButton>
                 </div>
             </form>
+
+            <div className='flex justify-end py-5'>
+                <p className='text-sm'>Not registered? Click <Link href='/register' className='text-indigo-500 underline'>here</Link>.</p>
+            </div>
         </GuestLayout>
     );
 }
