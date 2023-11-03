@@ -31,6 +31,12 @@ export default function Authenticated({ user, header, children }) {
                                     TV Streams
                                 </NavLink>
                             </div>
+
+                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <NavLink href={route('radio-streams')} active={route().current('radio-streams')}>
+                                    Radio Streams
+                                </NavLink>
+                            </div>
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ml-6">
@@ -106,6 +112,12 @@ export default function Authenticated({ user, header, children }) {
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink href={route('tv-streams')} active={route().current('tv-streams')}>
                             TV Streams
+                        </ResponsiveNavLink>
+                    </div>
+
+                    <div className="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink href={route('radio-streams')} active={route().current('radio-streams')}>
+                            Radio Streams
                         </ResponsiveNavLink>
                     </div>
 

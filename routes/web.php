@@ -31,7 +31,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get("/tv-streams", [StreamController::class, "index"])->name("tv-streams");
+    Route::get("/tv-streams", [StreamController::class, "tv"])->name("tv-streams");
+    Route::get("/radio-streams", [StreamController::class, "radio"])->name("radio-streams");
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

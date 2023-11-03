@@ -1,4 +1,3 @@
-import TVStreamItem from '@/Components/TVStreamItem';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import axios from 'axios';
@@ -114,7 +113,7 @@ export default function TVStreams({ auth, streaming_url_links, country }) {
                             <div className='px-3 py-4 font-bold text-xl text-indigo-600'>Channels:</div>
                         }
 
-                        <div className={`p-4 lg:p-0 text-gray-900 flex flex-wrap justify-start md:${streamingUrlLinks.length >= 6 ? "justify-between" : "justify-start"}`}>
+                        <div className={`p-4 lg:p-0 text-gray-900 flex flex-wrap justify-start`}>
                             {streamingUrlLinks.map((s) => {
                                 i++;
 
