@@ -15,14 +15,31 @@ export default function TVStreams({ auth, streaming_url_links, country }) {
     const RenderStatus = () => {
         if (isStreamingProviderWorksFine == true) {
             return <p className='pl-2 text-green-600 font-extrabold text-xl'>ACTIVE</p>
+        } else if(isStreamingProviderWorksFine == null) {
+            return <p className='pl-2 text-yellow-600 font-extrabold text-xl'>WAITING</p>
         } else {
             return <p className='pl-2 text-red-500 font-extrabold text-xl'>INACTIVE</p>
         }
     }
 
+    const getBadgeColor = (url, channel) => {
+
+        if (showStream == url || channel == showStream) {
+            if(isStreamingProviderWorksFine == null) {
+                return "text-yellow-500"
+            } else if(isStreamingProviderWorksFine == false) {
+                return "text-red-600"
+            } else {
+                return "text-green-600"
+            }
+        }
+    }
+
     const attachStream = (url, name) => {
-        setIsStreamingProviderWorksFine(false)
+        setIsStreamingProviderWorksFine(null)
         setCurrentChannelName(name)
+
+        var video = document.getElementById('video');
 
         if (Hls.isSupported()) {
             var video = document.getElementById('video');
@@ -30,12 +47,34 @@ export default function TVStreams({ auth, streaming_url_links, country }) {
             hls.on(Hls.Events.MEDIA_ATTACHED, function () {
                 console.log('Video and HLS bounded!');
             });
+
             hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-                setIsStreamingProviderWorksFine(true)
                 setCurrentChannelName(name)
                 console.log(
                     'Manifest loaded, found ' + data.levels.length + ' quality level!',
                 );
+            });
+
+            video.oncanplay = () => {
+                setIsStreamingProviderWorksFine(true)
+            }
+
+            hls.on(Hls.Events.ERROR, function (event, data) {
+                
+                if (data.fatal) {
+                    switch (data.type) {
+                      case Hls.ErrorTypes.MEDIA_ERROR:
+                        setIsStreamingProviderWorksFine(false)
+                        break;
+                      case Hls.ErrorTypes.NETWORK_ERROR:
+                        setIsStreamingProviderWorksFine(false)
+                        break;
+                      default:
+                        // cannot recover
+                        hls.destroy();
+                        break;
+                    }
+                  }
             });
 
             hls.loadSource(url);
@@ -120,10 +159,12 @@ export default function TVStreams({ auth, streaming_url_links, country }) {
                                 return (
                                     <div className='p-2'>
                                         <div onClick={() => {
-                                            setShowStream(s.url);
-                                            attachStream(s.url, s.channel);
+                                            if (showStream != s.url) {
+                                                setShowStream(s.url);
+                                                attachStream(s.url, s.channel);
+                                            }
                                         }
-                                        } className={`badge badge-outline ${currentChannelName == s.channel ? "text-indigo-500":""} text-lg p-4 cursor-pointer font-bold`}>{s.channel}</div>
+                                        } className={`badge badge-outline ${getBadgeColor(s.url, s.channel)} text-lg p-4 cursor-pointer font-bold`}>{s.channel}</div>
                                     </div>
                                 )
                             })}
