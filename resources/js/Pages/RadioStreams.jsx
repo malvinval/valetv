@@ -4,14 +4,15 @@ import axios from 'axios';
 import { useState } from 'react';
 import ValeTVLogo from '../../../public/valetv-transparent.png';
 
-const RadioStreams = ({ auth, streaming_url_links, country }) => {
+const RadioStreams = ({ auth, streaming_url_links }) => {
     const [showStream, setShowStream] = useState(null)
     const [radioLogo, setRadioLogo] = useState("");
     const [radioName, setRadioName] = useState("-");
-    const [radioCountry, setRadioCountry] = useState("Indonesia");
+    // const [radioCountry, setRadioCountry] = useState(streaming_url_links[0]["country"]);
     const [recommendedCountries, setRecommendedCountries] = useState(null);
 
-    const handleRequest = (url, favicon, name, country) => {
+    const handleRequest = (url, favicon, name) => {
+        console.log(url)
         const lastChar = url.charAt(url.length - 1);
 
         if (lastChar == '/') {
@@ -21,7 +22,6 @@ const RadioStreams = ({ auth, streaming_url_links, country }) => {
         setShowStream(url)
         setRadioLogo(favicon)
         setRadioName(name)
-        setRadioCountry(country)
     }
 
     const getCountryRecommendations = (inputCountry) => {
@@ -43,7 +43,7 @@ const RadioStreams = ({ auth, streaming_url_links, country }) => {
     const element = (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Country: {radioCountry}</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Country: {streaming_url_links[0]["country"]}</h2>}
         >
             <Head title="Radio Streams" />
 
@@ -103,7 +103,7 @@ const RadioStreams = ({ auth, streaming_url_links, country }) => {
 
                                 return (
                                     <div className='p-2' onClick={() => {
-                                        handleRequest(s.url, s.favicon, s.name, s.country)
+                                        handleRequest(s.url, s.favicon, s.name)
                                     }}>
                                         <div className={`badge badge-outline ${showStream == s.url ? "text-indigo-500":""} text-sm lg:text-lg p-4 cursor-pointer font-bold`}>{s.name}</div>
                                     </div>

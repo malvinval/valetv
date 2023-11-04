@@ -52,9 +52,13 @@ class StreamController extends Controller
     }
 
     public function radio(Request $request) {
-        $cacheKey = 'radio_streaming_url_from_api_'.$request->input("country");
+        $cacheKey = 'radio_streaming_url_from_api_ID';
 
-        $data = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($request, &$cleandata) {
+        if ($request->has("country")) {
+            $cacheKey = 'radio_streaming_url_from_api_'.$request->input("country");
+        }
+
+        $data = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($request) {
             $url = "https://de1.api.radio-browser.info/json/stations/search?countrycode=ID&hidebroken=true&order=clickcount&reverse=true";
             
             if ($request->has("country")) {
@@ -73,7 +77,6 @@ class StreamController extends Controller
 
         return Inertia::render("RadioStreams", [
             "streaming_url_links" => $data,
-            "country" => $request->input("country"),
             "countries" => $countries
         ]);
     }
