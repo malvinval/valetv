@@ -8,11 +8,11 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
     const [showStream, setShowStream] = useState(null)
     const [radioLogo, setRadioLogo] = useState("");
     const [radioName, setRadioName] = useState("-");
-    // const [radioCountry, setRadioCountry] = useState(streaming_url_links[0]["country"]);
+    const [radioStatus, setRadioStatus] = useState("WAITING")
     const [recommendedCountries, setRecommendedCountries] = useState(null);
 
     const handleRequest = (url, favicon, name) => {
-        console.log(url)
+        setRadioStatus("WAITING");
         const lastChar = url.charAt(url.length - 1);
 
         if (lastChar == '/') {
@@ -22,6 +22,16 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
         setShowStream(url)
         setRadioLogo(favicon)
         setRadioName(name)
+
+        let audio = document.getElementById("audio");
+
+        audio.onerror = () => {
+            setRadioStatus("INACTIVE")
+        }
+
+        audio.oncanplay = () => {
+            setRadioStatus("ACTIVE")
+        }
     }
 
     const getCountryRecommendations = (inputCountry) => {
@@ -37,6 +47,29 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
             })
         } else {
             setRecommendedCountries(null)
+        }
+    }
+
+    const RadioStatus = () => {
+        if(radioStatus == "WAITING") {
+            return <p className='pl-2 text-yellow-500 font-extrabold text-xl'>{radioStatus}</p>
+        } else if(radioStatus == "INACTIVE") {
+            return <p className='pl-2 text-red-600 font-extrabold text-xl'>{radioStatus}</p>
+        } else {
+            return <p className='pl-2 text-green-600 font-extrabold text-xl'>{radioStatus}</p>
+        }
+    }
+
+    const getBadgeColor = (url, name) => {
+
+        if (showStream == url || radioName == name) {
+            if(radioStatus == "WAITING") {
+                return "text-yellow-500"
+            } else if(radioStatus == "INACTIVE") {
+                return "text-red-600"
+            } else {
+                return "text-green-600"
+            }
         }
     }
 
@@ -92,8 +125,8 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
                                     <p className='font-extrabold text-lg md:text-xl'>{radioName}</p>
                                 </div>
                                 <div className='flex items-center'>
-                                    <p className='text-xl font-bold'></p>
-
+                                    <p className='text-xl font-bold'>Radio status: </p>
+                                    <RadioStatus />
                                 </div>
                             </div>
                         </div>
@@ -105,7 +138,7 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
                                     <div className='p-2' onClick={() => {
                                         handleRequest(s.url, s.favicon, s.name)
                                     }}>
-                                        <div className={`badge badge-outline ${showStream == s.url ? "text-indigo-500":""} text-sm lg:text-lg p-4 cursor-pointer font-bold`}>{s.name}</div>
+                                        <div className={`badge badge-outline ${getBadgeColor(s.url, s.name)} text-sm lg:text-lg p-4 cursor-pointer font-bold`}>{s.name}</div>
                                     </div>
                                 )
                             })}
