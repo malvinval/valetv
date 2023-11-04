@@ -105,7 +105,7 @@ const RadioStreams = ({ auth, streaming_url_links, country }) => {
                                     <div className='p-2' onClick={() => {
                                         handleRequest(s.url, s.favicon, s.name, s.country)
                                     }}>
-                                        <div className={`badge badge-outline text-sm lg:text-lg p-4 cursor-pointer font-bold`}>{s.name}</div>
+                                        <div className={`badge badge-outline ${showStream == s.url ? "text-indigo-500":""} text-sm lg:text-lg p-4 cursor-pointer font-bold`}>{s.name}</div>
                                     </div>
                                 )
                             })}
