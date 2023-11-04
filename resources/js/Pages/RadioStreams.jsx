@@ -52,11 +52,11 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
 
     const RadioStatus = () => {
         if(radioStatus == "WAITING") {
-            return <p className='pl-2 text-yellow-500 font-extrabold text-xl'>{radioStatus}</p>
+            return <p className='pl-2 text-yellow-500 font-extrabold text-lg md:text-xl'>{radioStatus}</p>
         } else if(radioStatus == "INACTIVE") {
-            return <p className='pl-2 text-red-600 font-extrabold text-xl'>{radioStatus}</p>
+            return <p className='pl-2 text-red-600 font-extrabold text-lg md:text-xl'>{radioStatus}</p>
         } else {
-            return <p className='pl-2 text-green-600 font-extrabold text-xl'>{radioStatus}</p>
+            return <p className='pl-2 text-green-600 font-extrabold text-lg md:text-xl'>{radioStatus}</p>
         }
     }
 
@@ -125,7 +125,7 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
                                     <p className='font-extrabold text-lg md:text-xl'>{radioName}</p>
                                 </div>
                                 <div className='flex items-center'>
-                                    <p className='text-xl font-bold'>Radio status: </p>
+                                    <p className='text-lg md:text-xl font-bold'>Radio status: </p>
                                     <RadioStatus />
                                 </div>
                             </div>

@@ -139,7 +139,7 @@ export default function TVStreams({ auth, streaming_url_links, country }) {
                                     <p className='font-extrabold text-lg md:text-xl'>{currentChannelName}</p>
                                 </div>
                                 <div className='flex items-center'>
-                                    <p className='text-xl font-bold'>Channel status: </p>
+                                    <p className='text-lg md:text-xl font-bold'>Channel status: </p>
                                     <RenderStatus />
                                 </div>
                             </div>
