@@ -22,6 +22,7 @@
     "dependencies": {
         "daisyui": "^3.9.4",
         "hls.js": "^1.5.0-alpha.1.0.canary.9685",
-        "plyr": "^3.7.8"
+        "plyr": "^3.7.8",
+        "react-icons": "^4.11.0"
     }
 }

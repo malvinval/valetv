@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import axios from 'axios';
 import { useState } from 'react';
 import ValeTVLogo from '../../../public/valetv-transparent.png';
+import {BsSuitHeart} from 'react-icons/bs';
 
 const RadioStreams = ({ auth, streaming_url_links }) => {
     const [showStream, setShowStream] = useState(null)
@@ -124,9 +125,15 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
                                 <div className='flex items-center mb-3'>
                                     <p className='font-extrabold text-lg md:text-xl'>{radioName}</p>
                                 </div>
-                                <div className='flex items-center'>
+                                <div className='flex items-center mb-3'>
                                     <p className='text-lg md:text-xl font-bold'>Radio status: </p>
                                     <RadioStatus />
+                                </div>
+                                <div className='flex items-center'>
+                                    <button className='hover:text-white hover:bg-pink-500 transition py-1 px-3 border border-pink-500 text-pink-500 rounded-lg flex justify-around font-bold items-center'>
+                                        <BsSuitHeart />
+                                        <p className='ml-2'>Add to dashboard</p>
+                                    </button>
                                 </div>
                             </div>
                         </div>
