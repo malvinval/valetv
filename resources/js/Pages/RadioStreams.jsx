@@ -11,8 +11,8 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
     const [showStream, setShowStream] = useState(localStorage.getItem("showStream") || null)
     const [radioName, setRadioName] = useState(localStorage.getItem("radioName") || "-");
     const [radioStatus, setRadioStatus] = useState(localStorage.getItem("radioStatus") || "WAITING")
-    const [recommendedCountries, setRecommendedCountries] = useState(null);
     const [radioLogo, setRadioLogo] = useState(localStorage.getItem("radioLogo") || "");
+    const [recommendedCountries, setRecommendedCountries] = useState(null);
 
     // const getRadioName = () => {
     //     if (localStorage.getItem)
@@ -182,11 +182,11 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
                         
                             
                         <div id='radio-stream-container' className={`bg-gray-500 ${radioStatus == "ACTIVE" || localStorage.getItem("radioStatus") == "ACTIVE" ? "visible":"invisible"}  py-3 shadow-xl fixed flex justify-center bottom-0 right-0 left-0`}>
-                            <div className='w-3/4 flex justify-around items-center flex-col md:flex-row'>
+                            <div className='w-full sm:w-3/4 flex justify-around items-center flex-col md:flex-row'>
                                 <div>
                                     <p className='text-white font-bold pb-3 md:pb-0'>Now playing: {radioName}</p>
                                 </div>
-                                <audio id='audio' autoPlay src={showStream} controls className='w-full md:w-1/3'></audio>
+                                <audio id='audio' autoPlay src={showStream} controls className='w-full px-2 md:w-1/3'></audio>
                             </div>
 
                             <div onClick={stopRadio} className='absolute p-1 right-2 top-2 rounded-[50px] bg-pink-500 cursor-pointer hover:bg-pink-600'>
