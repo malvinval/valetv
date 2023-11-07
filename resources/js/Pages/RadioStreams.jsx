@@ -57,6 +57,7 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
         localStorage.removeItem("showStream")
         localStorage.removeItem("radioName")
         localStorage.removeItem("radioStatus")
+        localStorage.removeItem("radioLogo")
         setShowStream(null);
         setRadioStatus("WAITING")
         setRadioName("-")
