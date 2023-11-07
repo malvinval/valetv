@@ -5,13 +5,20 @@ import { useState } from 'react';
 import ValeTVLogo from '../../../public/valetv-transparent.png';
 import {BsSuitHeart} from 'react-icons/bs';
 import {AiOutlineClose} from 'react-icons/ai';
+import { useEffect } from 'react';
 
 const RadioStreams = ({ auth, streaming_url_links }) => {
-    const [showStream, setShowStream] = useState(null)
-    const [radioLogo, setRadioLogo] = useState("");
+    const [showStream, setShowStream] = useState(localStorage.getItem("showStream") !== null ? localStorage.getItem("showStream") : null)
     const [radioName, setRadioName] = useState("-");
     const [radioStatus, setRadioStatus] = useState("WAITING")
     const [recommendedCountries, setRecommendedCountries] = useState(null);
+    const [radioLogo, setRadioLogo] = useState("");
+
+    useEffect(() => {
+        localStorage.setItem("showStream", showStream)
+        localStorage.setItem("radioName", radioName)
+        localStorage.setItem("radioStatus", radioStatus)
+    }, [showStream, radioStatus])
 
     const handleRequest = (url, favicon, name) => {
         setRadioStatus("WAITING");
