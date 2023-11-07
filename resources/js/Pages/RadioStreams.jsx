@@ -12,7 +12,7 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
     const [radioName, setRadioName] = useState(localStorage.getItem("radioName") || "-");
     const [radioStatus, setRadioStatus] = useState(localStorage.getItem("radioStatus") || "WAITING")
     const [recommendedCountries, setRecommendedCountries] = useState(null);
-    const [radioLogo, setRadioLogo] = useState("");
+    const [radioLogo, setRadioLogo] = useState(localStorage.getItem("radioLogo") || "");
 
     // const getRadioName = () => {
     //     if (localStorage.getItem)
@@ -23,6 +23,7 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
             localStorage.setItem("showStream", showStream)
             localStorage.setItem("radioName", radioName)
             localStorage.setItem("radioStatus", radioStatus)
+            localStorage.setItem("radioLogo", radioLogo)
         }
         
     }, [showStream, radioStatus])

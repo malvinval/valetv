@@ -3,6 +3,8 @@ import { Head, Link } from '@inertiajs/react';
 import axios from 'axios';
 import Hls from 'hls.js';
 import { useEffect, useState } from 'react';
+import {AiOutlineClose} from 'react-icons/ai';
+
 
 export default function TVStreams({ auth, streaming_url_links, country }) {
     const [streamingUrlLinks, setStreamingUrlLinks] = useState(streaming_url_links)
@@ -11,6 +13,9 @@ export default function TVStreams({ auth, streaming_url_links, country }) {
     const [isStreamingProviderWorksFine, setIsStreamingProviderWorksFine] = useState(false);
     const [currentChannelName, setCurrentChannelName] = useState("-");
     const [recommendedCountries, setRecommendedCountries] = useState(null);
+    const [radioName, setRadioName] = useState(localStorage.getItem("radioName") || "-");
+    const [radioStatus, setRadioStatus] = useState(localStorage.getItem("radioStatus") || "WAITING")
+    const [radioShowStream, setRadioShowStream] = useState(localStorage.getItem("showStream") || null)
 
     const RenderStatus = () => {
         if (isStreamingProviderWorksFine == true) {
@@ -20,6 +25,17 @@ export default function TVStreams({ auth, streaming_url_links, country }) {
         } else {
             return <p className='pl-2 text-red-500 font-extrabold text-xl'>INACTIVE</p>
         }
+    }
+
+    const stopRadio = () => {
+        var audioPlayer = document.getElementsByTagName('audio')[0];
+        audioPlayer.pause();
+        localStorage.removeItem("showStream")
+        localStorage.removeItem("radioName")
+        localStorage.removeItem("radioStatus")
+        setShowStream(null);
+        setRadioStatus("WAITING")
+        setRadioName("-")
     }
 
     const getBadgeColor = (url, channel) => {
@@ -168,6 +184,19 @@ export default function TVStreams({ auth, streaming_url_links, country }) {
                                     </div>
                                 )
                             })}
+                        </div>
+
+                        <div id='radio-stream-container' className={`bg-gray-500 ${radioStatus == "ACTIVE" || localStorage.getItem("radioStatus") == "ACTIVE" ? "visible":"invisible"}  py-3 shadow-xl fixed flex justify-center bottom-0 right-0 left-0`}>
+                            <div className='w-3/4 flex justify-around items-center flex-col md:flex-row'>
+                                <div>
+                                    <p className='text-white font-bold pb-3 md:pb-0'>Now playing: {radioName}</p>
+                                </div>
+                                <audio id='audio' autoPlay src={radioShowStream} controls className='w-full md:w-1/3'></audio>
+                            </div>
+
+                            <div onClick={stopRadio} className='absolute p-1 right-2 top-2 rounded-[50px] bg-pink-500 cursor-pointer hover:bg-pink-600'>
+                                <p className='text-xl text-white'><AiOutlineClose /></p>
+                            </div>
                         </div>
                     </div>
                 </div>
