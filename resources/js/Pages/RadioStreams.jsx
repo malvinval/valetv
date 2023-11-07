@@ -8,16 +8,23 @@ import {AiOutlineClose} from 'react-icons/ai';
 import { useEffect } from 'react';
 
 const RadioStreams = ({ auth, streaming_url_links }) => {
-    const [showStream, setShowStream] = useState(localStorage.getItem("showStream") !== null ? localStorage.getItem("showStream") : null)
-    const [radioName, setRadioName] = useState("-");
-    const [radioStatus, setRadioStatus] = useState("WAITING")
+    const [showStream, setShowStream] = useState(localStorage.getItem("showStream") || null)
+    const [radioName, setRadioName] = useState(localStorage.getItem("radioName") || "-");
+    const [radioStatus, setRadioStatus] = useState(localStorage.getItem("radioStatus") || "WAITING")
     const [recommendedCountries, setRecommendedCountries] = useState(null);
     const [radioLogo, setRadioLogo] = useState("");
 
+    // const getRadioName = () => {
+    //     if (localStorage.getItem)
+    // }
+
     useEffect(() => {
-        localStorage.setItem("showStream", showStream)
-        localStorage.setItem("radioName", radioName)
-        localStorage.setItem("radioStatus", radioStatus)
+        if (showStream != null) {
+            localStorage.setItem("showStream", showStream)
+            localStorage.setItem("radioName", radioName)
+            localStorage.setItem("radioStatus", radioStatus)
+        }
+        
     }, [showStream, radioStatus])
 
     const handleRequest = (url, favicon, name) => {
@@ -41,13 +48,14 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
         audio.oncanplay = () => {
             setRadioStatus("ACTIVE")
         }
-
-        console.log(radioStatus)
     }
 
     const stopRadio = () => {
         var audioPlayer = document.getElementsByTagName('audio')[0];
         audioPlayer.pause();
+        localStorage.removeItem("showStream")
+        localStorage.removeItem("radioName")
+        localStorage.removeItem("radioStatus")
         setShowStream(null);
         setRadioStatus("WAITING")
         setRadioName("-")
@@ -172,7 +180,7 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
                         
                         
                             
-                        <div id='radio-stream-container' className={`bg-gray-500 ${radioStatus == "ACTIVE" ? "visible":"invisible"}  py-3 shadow-xl fixed flex justify-center bottom-0 right-0 left-0`}>
+                        <div id='radio-stream-container' className={`bg-gray-500 ${radioStatus == "ACTIVE" || localStorage.getItem("radioStatus") == "ACTIVE" ? "visible":"invisible"}  py-3 shadow-xl fixed flex justify-center bottom-0 right-0 left-0`}>
                             <div className='w-3/4 flex justify-around items-center flex-col md:flex-row'>
                                 <div>
                                     <p className='text-white font-bold pb-3 md:pb-0'>Now playing: {radioName}</p>
