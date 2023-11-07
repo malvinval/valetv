@@ -149,7 +149,7 @@ export default function TVStreams({ auth, streaming_url_links, country }) {
                             streamingUrlLinks.length === 0 ?
                             <div className='px-3 py-4 font-bold text-xl text-red-600'>No channel</div>
                             :
-                            <div className='px-3 py-4 font-bold text-xl text-indigo-600'>Channels:</div>
+                            ""
                         }
 
                         <div className={`p-4 lg:p-0 text-gray-900 flex flex-wrap justify-start`}>

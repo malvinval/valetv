@@ -33,6 +33,8 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
         audio.oncanplay = () => {
             setRadioStatus("ACTIVE")
         }
+
+        console.log(radioStatus)
     }
 
     const getCountryRecommendations = (inputCountry) => {
@@ -152,17 +154,17 @@ const RadioStreams = ({ auth, streaming_url_links }) => {
                             })}
                         </div>
                         
-                        {
-                            showStream && 
-                            <div id='radio-stream-container' className='bg-gray-500 py-3 shadow-xl fixed flex justify-center bottom-0 right-0 left-0'>
-                                <div className='w-3/4 flex justify-around items-center flex-col md:flex-row'>
-                                    <div>
-                                        <p className='text-white font-bold pb-3 md:pb-0'>Now playing: {radioName}</p>
-                                    </div>
-                                    <audio id='audio' autoPlay src={showStream} controls className='w-full md:w-1/3'></audio>
+                        
+                            
+                        <div id='radio-stream-container' className={`bg-gray-500 ${radioStatus == "ACTIVE" ? "visible":"invisible"}  py-3 shadow-xl fixed flex justify-center bottom-0 right-0 left-0`}>
+                            <div className='w-3/4 flex justify-around items-center flex-col md:flex-row'>
+                                <div>
+                                    <p className='text-white font-bold pb-3 md:pb-0'>Now playing: {radioName}</p>
                                 </div>
+                                <audio id='audio' autoPlay src={showStream} controls className='w-full md:w-1/3'></audio>
                             </div>
-                        }
+                        </div>
+                        
                     </div>
                 </div>
             </div>
